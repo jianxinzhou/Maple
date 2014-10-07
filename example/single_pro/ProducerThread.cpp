@@ -1,7 +1,7 @@
 #include "ProducerThread.h"
 #include "Buffer.h"
+#include <stdio.h>
 #include <stdlib.h> // srand
-#include <iostream> // cout
 #include <unistd.h> // sleep
 using namespace std;
 
@@ -17,7 +17,7 @@ void ProducerThread::run()
     {
         int num = rand() % 100;
         buffer_.push(num);
-        cout << "push a num " << num << " and now size equal to " << buffer_.size() << endl;
+        printf("push a num %d and now size equal to %d \n", num, buffer_.size());
 
         ::sleep(2);
     }

@@ -1,6 +1,6 @@
 #include "ConsumerThread.h"
 #include "Buffer.h"
-#include <iostream> // cout
+#include <stdio.h>
 #include <unistd.h> // sleep
 using namespace std;
 
@@ -13,7 +13,7 @@ void ConsumerThread::run()
     while(1)
     {
         int num = buffer_.pop();
-        cout << "pop a num " << num << " and now size equal to " << buffer_.size() << endl;
+        printf("pop a num %d and now size equal to %d \n", num, buffer_.size());
 
         ::sleep(3);
     }
