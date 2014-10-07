@@ -6,7 +6,7 @@
 
 class MutexLock;
 
-class Condition : NonCopyable
+class Condition
 {
     public:
         Condition(MutexLock &mutex);
@@ -17,9 +17,7 @@ class Condition : NonCopyable
         void notifyAll();
 
     private:
-        pthread_cond_t cond_;
         MutexLock &mutex_;
+        pthread_cond_t cond_;
 };
-
-
 #endif  /*CONDITION_H*/

@@ -1,11 +1,12 @@
 #ifndef NONCOPYABLE_H
 #define NONCOPYABLE_H 
 
-class NonCopyable // 禁用值语义
+class NonCopyable
 {
     public:
-        NonCopyable()  { }
-        ~NonCopyable() { }
+        NonCopyable();
+        ~NonCopyable();
+
     private:
         NonCopyable(const NonCopyable &);
         void operator=(const NonCopyable &);

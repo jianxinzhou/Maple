@@ -2,21 +2,20 @@
 #define MUTEXLOCK_H 
 
 #include "NonCopyable.h"
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 
-/*用于pthread系列函数的返回值检查*/
 #define TINY_CHECK(exp) \
 if(!(exp)) \
-{   \
-    fprintf(stderr, "File:%s, Line:%d Exp:[" #exp "] is true, abort.\n" \
-            , __FILE__, __LINE__); \
+{ \
+    fprintf(stderr, "File:%s Line:%d [ #exp ] is true, abort. \n", __FILE__, __LINE__); \
     abort(); \
 }
 
 class MutexLock : NonCopyable
 {
+    friend class Condition;
     public:
         MutexLock();
         ~MutexLock();
@@ -24,21 +23,42 @@ class MutexLock : NonCopyable
         void lock();
         void unlock();
 
-        // 辅助函数
+        pthread_mutex_t *getMutexPtr();
         bool isLocking() const;
-        pthread_mutex_t *getMutexPtr();// 思考为什么不是const}
-    
+
     private:
+        void restoreMutexStatus();
+
         pthread_mutex_t mutex_;
-        bool isLocking_; // 是否上锁
+        bool isLocking_;
 };
 
+inline pthread_mutex_t * MutexLock::getMutexPtr()
+{
+    return &mutex_;
+}
+
 inline bool MutexLock::isLocking() const
-{ return isLocking_; }
+{
+    return isLocking_;
+}
 
-inline pthread_mutex_t *MutexLock::getMutexPtr()
-{ return &mutex_; }
+inline void MutexLock::restoreMutexStatus()
+{
+    isLocking_ = true;
+}
 
+
+
+
+class MutexLockGuard : NonCopyable
+{
+    public:
+        MutexLockGuard(MutexLock &mutex_);
+        ~MutexLockGuard();
+    private:
+        MutexLock &mutex_;
+};
 
 
 #endif  /*MUTEXLOCK_H*/
