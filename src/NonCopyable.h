@@ -4,8 +4,8 @@
 class NonCopyable
 {
     public:
-        NonCopyable();
-        ~NonCopyable();
+        NonCopyable() { }
+        ~NonCopyable(){ }
 
     private:
         NonCopyable(const NonCopyable &);
