@@ -25,4 +25,8 @@ d) 引入互斥锁，实现对getInstance内临界区的互斥访问。此时每
    
 e) 采用double check模式，使得不必每次调用都需要加锁，提高了效率。
 
-3  标准实现代码参看 test_singleton.cpp
+4  这种编写单例模式的方法叫做 DCLP（double-check-locking-pattern）。
+
+5  拓展：http://www.aristeia.com/Papers/DDJ_Jul_Aug_2004_revised.pdf
+
+6  标准实现代码参看 test_singleton.cpp
