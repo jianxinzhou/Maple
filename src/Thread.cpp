@@ -2,9 +2,10 @@
 #include "MutexLock.h" // TINY_CHECK
 #include <assert.h>
 
-Thread::Thread()
+Thread::Thread(ThreadCallback callback)
     : threadId_(0),
-      isRunning_(false)
+      isRunning_(false),
+      callback_(std::move(callback))
 { }
 
 Thread::~Thread()
@@ -19,15 +20,15 @@ Thread::~Thread()
 void *Thread::runInThread(void *arg)
 {
     Thread *pt = static_cast<Thread*>(arg);
-    pt -> run();
+    pt -> callback_(); // 调用回调函数
 
     return NULL;
 }
 
 void Thread::start()
 {
-    pthread_create(&threadId_, NULL, runInThread, this);
     isRunning_ = true;
+    TINY_CHECK(!pthread_create(&threadId_, NULL, runInThread, this));
 }
 
 void Thread::join()
