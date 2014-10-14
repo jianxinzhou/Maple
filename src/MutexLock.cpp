@@ -9,7 +9,7 @@ MutexLock::MutexLock()
 
 MutexLock::~MutexLock()
 {
-    assert(isLocking());
+    assert(!isLocking()); // 确保解锁
     TINY_CHECK(!pthread_mutex_destroy(&mutex_));
 }
 

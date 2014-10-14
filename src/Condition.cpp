@@ -16,7 +16,7 @@ Condition::~Condition()
 void Condition::wait()
 {
     assert(mutex_.isLocking());
-    TINY_CHECK(pthread_cond_wait(&cond_, mutex_.getMutexPtr()));
+    TINY_CHECK(!pthread_cond_wait(&cond_, mutex_.getMutexPtr()));
     // 如果阻塞在 pthread_cond_wait
     // 其他线程抢到锁，再解锁后，bool变量isLocking_将置为false
     // 如果此时该阻塞线程抢到锁，如果经while循环后再执行Condition::wait

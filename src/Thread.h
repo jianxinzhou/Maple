@@ -14,7 +14,7 @@ class Thread : NonCopyable
         // 构造函数使用c++11风格，使用Thread(ThreadCallback callback)代替如下：
         // 常量语义：Thread(const ThreadCallback &callback)
         // 移动语义：Thread(ThreadCallback &&callback)
-        Thread(ThreadCallback);
+        explicit Thread(ThreadCallback);
         virtual ~Thread();
 
         void start();
