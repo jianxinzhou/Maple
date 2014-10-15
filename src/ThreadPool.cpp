@@ -55,6 +55,11 @@ void ThreadPool::stop()
     // ps: 线程池中的任务就是取任务，执行任务
     // 因此我们传给线程池中各个线程的回调函数runInThread就是取任务，执行任务
     full_.notifyAll();
+    // 激活添加任务的线程（我的测试程序添加任务使用的是主线程）
+    // 如果不激活的话，那么等到任务队列满后，
+    // 由于线程池关闭，线程池中取任务的线程关闭，
+    // 添加任务的线程会一直卡在empty_.wait()
+    empty_.notifyAll();
 
     for(size_t ix = 0;
         ix != threadsNum_;
@@ -68,6 +73,8 @@ void ThreadPool::stop()
 
 void ThreadPool::addTask(Task task)
 {
+    if(!isStarted_)
+        return;
     
     {
         MutexLockGuard lock(mutex_);
@@ -76,7 +83,7 @@ void ThreadPool::addTask(Task task)
         {
             empty_.wait();
         }
-        
+        // 添加这步，是为了防止线程池关闭时，添加任务的线程池以外的线程卡在wait上
         if(!isStarted_) // 线程池关闭
         {
             return;
