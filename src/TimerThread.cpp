@@ -1,7 +1,7 @@
 #include "TimerThread.h"
 
-TimerThread::TimerThread(int value,
-                         int interval,
+TimerThread::TimerThread(double value,
+                         double interval,
                          Callback cb)
     : timer_(value, interval, std::move(cb)),
       thread_(std::bind(&Timer::start, &timer_))

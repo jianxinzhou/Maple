@@ -16,6 +16,8 @@
 
 namespace  // 匿名命名空间，static
 {
+    const long KNsecondsOfPerSecond = 1000 * 1000 * 1000;
+
     int createTimerfd()
     {
         int timerfd = ::timerfd_create(CLOCK_REALTIME, 0);
@@ -37,12 +39,14 @@ namespace  // 匿名命名空间，static
         struct timespec it_value;     // Initial expiration 
     };
     */
-    void setTimerfd(int timerfd, int value, int interval) // 起始时间，间隔时间
+    void setTimerfd(int timerfd, double value, double interval) // 起始时间，间隔时间
     {
         struct itimerspec val;
         memset(&val, 0, sizeof val);
-        val.it_value.tv_sec = value;
-        val.it_interval.tv_sec = interval;
+        val.it_value.tv_sec     = (time_t)value;
+        val.it_value.tv_nsec    = (value - (time_t)value) * KNsecondsOfPerSecond; 
+        val.it_interval.tv_sec  = (time_t)interval;
+        val.it_interval.tv_nsec = (interval - (time_t)interval) * KNsecondsOfPerSecond; 
 
         if(::timerfd_settime(timerfd, 0, &val, NULL) == -1)
             ERR_EXIT("timerfd_settime");
@@ -66,8 +70,8 @@ namespace  // 匿名命名空间，static
 }
 
 // 构造函数
-Timer::Timer(int val,
-             int interval,
+Timer::Timer(double val,
+             double interval,
              TimerCallback cb)
     : timerfd_(createTimerfd()),
       val_(val),

@@ -11,8 +11,8 @@ class TimerThread : NonCopyable
     public:
         typedef std::function<void ()> Callback;
         
-        TimerThread(int value,
-                    int interval,
+        TimerThread(double value,
+                    double interval,
                     Callback cb);
 
         void start();

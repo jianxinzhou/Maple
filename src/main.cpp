@@ -19,7 +19,7 @@ void stopPool(ThreadPool *pool) //用于停止线程池
 int main(int argc, char const *argv[])
 {
     ThreadPool pool(100, 4);
-    TimerThread timer(4, 0, std::bind(&stopPool, &pool));
+    TimerThread timer(4.5, 0, std::bind(&stopPool, &pool));
     pool.start();
     timer.start(); //开启定时器，10s后停止线程池
 
@@ -53,6 +53,7 @@ void nano_sleep(double val)
 /*
 Output:
 
+foo
 foo
 foo
 foo
