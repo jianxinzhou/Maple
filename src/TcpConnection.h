@@ -1,7 +1,7 @@
 #ifndef TCP_CONNECTION_H
 #define TCP_CONNECTION_H
 
-#include <boost/noncopyable.hpp>
+#include "NonCopyable.h"
 #include <memory>
 #include <functional>
 #include "Socket.h"
@@ -15,7 +15,7 @@ typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
 
 
 
-class TcpConnection : boost::noncopyable,
+class TcpConnection : NonCopyable,
                       public std::enable_shared_from_this<TcpConnection>
 {
 public:
