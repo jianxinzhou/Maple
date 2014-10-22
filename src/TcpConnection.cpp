@@ -23,7 +23,9 @@ TcpConnection::~TcpConnection()
 //conn->handleConnectCalback()
 
 
-void TcpConnection::handleConnectCalback()
+// 继承了enable_shared_from_this，  
+// 用于在类的内部获取自己的智能指针。
+void TcpConnection::handleConnectCallback()
 {
     if(onConnectCallback_)
     {
@@ -31,7 +33,7 @@ void TcpConnection::handleConnectCalback()
     }
 }
 
-void TcpConnection::handleMessageCalback()
+void TcpConnection::handleMessageCallback()
 {
     if(onMessageCallback_)
     {
@@ -39,7 +41,7 @@ void TcpConnection::handleMessageCalback()
     }
 }
 
-void TcpConnection::handleCloseCalback()
+void TcpConnection::handleCloseCallback()
 {
     if(onCloseCallback_)
     {
@@ -95,3 +97,17 @@ void TcpConnection::send(const std::string &s)
 {
     writen(s.c_str(), s.size());
 }
+
+
+std::string TcpConnection::toString() const
+{
+    char text[100];
+    snprintf(text, sizeof text, "%s:%d -> %s:%d", 
+        localAddr_.toIp().c_str(),
+        localAddr_.toPort(),
+        peerAddr_.toIp().c_str(),
+        peerAddr_.toPort());
+
+    return text;
+}
+
